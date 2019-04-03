@@ -12,11 +12,14 @@ ethread_pool_t *ethread_create(int listenfd, int thread_num,
                                void *(*function)(void *));
 void ethread_sig_trigger(ethread_pool_t *pool);
 void ethread_destory(ethread_pool_t *pool);
-int set_nonblocking_mode(int fd);
+
 
 #ifdef __cplusplus
 }
 #endif
+
+static int set_nonblocking_mode(int fd);
+
 
 typedef struct ethread_info_t ethread_info_t;
 struct ethread_info_t {
@@ -82,7 +85,7 @@ void ethread_sig_trigger(ethread_pool_t *pool) {
   write(rpipe_fd, &on, sizeof(char));
 }
 
-int set_nonblocking_mode(int fd) {
+static int set_nonblocking_mode(int fd) {
   int old_option = fcntl(fd, F_GETFL);
   int new_option = old_option | O_NONBLOCK;
   fcntl(fd, F_SETFL, new_option);

@@ -3,6 +3,13 @@
 #include "../include/ethreadpool.h"
 
 
+int set_nonblocking_mode(int fd) {
+  int old_option = fcntl(fd, F_GETFL);
+  int new_option = old_option | O_NONBLOCK;
+  fcntl(fd, F_SETFL, new_option);
+  return old_option;
+}
+
 void addfd(int epollfd, int fd, bool one_shot) {
   epoll_event event;
   event.data.fd = fd;
