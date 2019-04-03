@@ -3,7 +3,7 @@
 #include "../include/ethreadpool.h"
 
 
-int set_nonblocking_mode(int fd) {
+int set_nonblocking(int fd) {
   int old_option = fcntl(fd, F_GETFL);
   int new_option = old_option | O_NONBLOCK;
   fcntl(fd, F_SETFL, new_option);
@@ -18,7 +18,7 @@ void addfd(int epollfd, int fd, bool one_shot) {
     event.events |= EPOLLONESHOT;
   }
   epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &event);
-  set_nonblocking_mode(fd);
+  set_nonblocking(fd);
 }
 
 void *work(void *args) {
